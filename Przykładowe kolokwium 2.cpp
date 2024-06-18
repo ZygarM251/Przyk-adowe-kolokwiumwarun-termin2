@@ -7,7 +7,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 using namespace std;
-
+class KontoBankowe;
 class Klient {
 public:
 	char nazwa[256];
@@ -21,7 +21,7 @@ public:
 	void setNazwa(const char* m_nazwa) {
 		strncpy_s(this->nazwa, m_nazwa, 256);
 	}
-	
+	static KontoBankowe toKontoBankowe(const Klient& a);
 };
 
 class KontoBankowe {
@@ -120,6 +120,20 @@ public:
 
 };
 
+KontoBankowe Klient::toKontoBankowe(const Klient& a) 
+{
+	char numeroKonto[27];
+	for (int i = 0; i < 26; i++)
+	{
+		numeroKonto[i] = (rand() % 10) + 48;
+	}
+	numeroKonto[26] = '\0';
+	double m_stanKonta = 0.0;
+
+	KontoBankowe wynik(numeroKonto, m_stanKonta, true, a);
+}
+
+
 int KontoBankowe::liczbaAktywnychKont = 0;
 
 class KontoOszczednosciowe : public KontoBankowe {
@@ -175,4 +189,7 @@ int main() {
 	KontoBankowe konto4(klient3);
 
 	cout << konto4 << endl;
+
+	konto1 = Klient::toKontoBankowe(klient3);
+	cout << konto1;
 }
